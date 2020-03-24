@@ -2,7 +2,7 @@
  *   RedGPU - MIT License
  *   Copyright (c) 2019 ~ By RedCamel( webseon@gmail.com )
  *   issue : https://github.com/redcamel/RedGPU/issues
- *   Last modification time of this file - 2020.2.28 21:0:29
+ *   Last modification time of this file - 2020.3.14 19:2:51
  *
  */
 "use strict"
@@ -19,7 +19,7 @@ new RedGPU.RedGPUContext(
 		// basic setup
 		tScene = new RedGPU.Scene();
 		tScene.grid = new RedGPU.Grid(this);
-		tCamera = new RedGPU.Camera(this);
+		tCamera = new RedGPU.Camera3D(this);
 		tCamera.y = 15;
 		tCamera.z = 15;
 		tCamera.lookAt(0, 0, 0);
