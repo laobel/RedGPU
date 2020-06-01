@@ -23,10 +23,9 @@ let makeMipmap = function (redGPUContext, imgList, targetTexture) {
 		if (targetTexture.mipMaps > 10) targetTexture.mipMaps = 10
 	}
 	textureDescriptor = {
-		size: {width: tW, height: tH, depth: 1,},
+		size: {width: tW, height: tH, depth: targetTexture instanceof BitmapTexture ? 1 : 6},
 		dimension: '2d',
 		format: 'rgba8unorm',
-		arrayLayerCount: targetTexture instanceof BitmapTexture ? 1 : 6,
 		mipLevelCount: targetTexture.useMipmap ? targetTexture.mipMaps + 1 : 1,
 		usage: GPUTextureUsage.COPY_DST | GPUTextureUsage.SAMPLED
 	};
@@ -41,6 +40,7 @@ let makeMipmap = function (redGPUContext, imgList, targetTexture) {
 		.then(
 			_ => {
 				redGPUContext.device.defaultQueue.submit([commandEncoder.finish()]);
+				console.log('이놈은뭐냐',gpuTexture)
 				targetTexture.resolve(gpuTexture);
 				if (targetTexture.onload) targetTexture.onload.call(targetTexture);
 			}
@@ -61,8 +61,10 @@ export default class BitmapCubeTexture extends BaseTexture {
 			let self = this;
 			new ImageLoader(redGPUContext, srcList, function (e) {
 				// console.log(MIPMAP_TABLE.get(self.mapKey));
+				//FIXME - 캐싱이 왜안되나
 				if (MIPMAP_TABLE.get(self.mapKey)) {
 					console.log('BitmapCubeTexture - 캐싱사용', e);
+					console.log('뭐가오는거지',MIPMAP_TABLE)
 					self.resolve(MIPMAP_TABLE.get(self.mapKey));
 					if (self.onload) self.onload(self)
 				} else {
